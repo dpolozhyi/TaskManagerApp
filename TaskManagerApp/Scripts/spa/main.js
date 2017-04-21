@@ -40,10 +40,7 @@ function TaskViewModel() {
     };
 
     self.removeTask = function(task) {
-        var i = self.tasks.indexOf(task);
-        if (i != -1) {
-            self.tasks.splice(i, 1);
-        }
+        self.tasks.remove(task);
     };
 
     self.saveTasks = function () {
