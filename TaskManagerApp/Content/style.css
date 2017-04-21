@@ -1,0 +1,62 @@
+@font-face {
+    font-family: Roboto-Regular;
+    src: url(fonts/Roboto-Regular.ttf);
+}
+
+html, body{
+	margin: 0;
+}
+
+ul{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+a{
+	text-decoration: none;
+}
+
+.navbar{
+	border: 1px solid blue;
+}
+
+.active{
+	background:#419ae5 !important;
+	color:white;
+}
+
+.delete{
+	color:red;
+}
+
+div.navbar ul.nav{
+	text-align:center;
+}
+
+div.navbar ul.nav li{
+	display:inline-block;
+	background: #c6bcb4;
+	margin-right: -4px;
+	border-right: 1px solid #ba9c5d;
+	padding: 15px 30px;
+}
+
+div.navbar ul.nav li:hover{
+	background:#49acff;
+	color:white;
+}
+
+
+div.navbar ul.nav a{
+	color:black;
+	font-family: Roboto-Regular;
+	font-size: 22px;
+}
+
+div.task-list ul.tasks li{
+}
+
+div.task-list ul.tasks li p, div.task-list ul.tasks li p a{
+	display: inline;
+}

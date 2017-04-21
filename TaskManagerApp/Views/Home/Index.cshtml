@@ -1,1 +1,29 @@
-﻿
+﻿<div class="navbar">
+    <ul class="nav">
+        <a href="#"><li class='active'>Main</li></a>
+        <a href="#"><li>Profile</li></a>
+        <a href="#"><li>Tasks</li></a>
+    </ul>
+</div>
+<div class="task-list">
+    <div class="new-task">
+        <label>Description:</label>
+        <input type="text" data-bind="value: newTask">
+        <label>Type: </label>
+        <select data-bind="options: categories, value: newTaskCategory"></select>
+        <button data-bind="click: addTask">Add</button>
+    </div>
+    <ul class="tasks" data-bind="foreach: tasks">
+        <li>
+            <input type="checkbox" data-bind="checked: isDone">
+            <p data-bind="text: title"></p>
+            <p data-bind="text: category"></p>
+            <a href="#" class="delete" data-bind="click: $root.removeTask">Delete</a>
+        </li>
+    </ul>
+    <button data-bind="click: saveTasks">Save</button>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/Scripts/spa/main.js")
+}
