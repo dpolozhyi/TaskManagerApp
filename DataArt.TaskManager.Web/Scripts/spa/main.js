@@ -52,7 +52,7 @@ function TaskViewModel() {
     }
 
     $.getJSON("/api/Task", function (allData) {
-        var mappedTasks = $.map($.parseJSON(allData), function (item) { return new Task(item.IsDone, item.Category, item.Description) });
+        var mappedTasks = $.map($.parseJSON(allData), function (item) { return new Task(item.IsDone, item.Category, item.Title) });
         self.tasks(mappedTasks);
     });
 

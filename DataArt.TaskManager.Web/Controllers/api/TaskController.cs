@@ -5,26 +5,28 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Newtonsoft.Json;
-using TaskManagerApp.Models;
+using TaskManager.Models;
 using System.IO;
 using AutoMapper;
+using DataArt.TaskManager.Entities;
+using DataArt.TaskManager.DAL;
 
-namespace TaskManagerApp.Controllers.api
+namespace TaskManager.Controllers.api
 {
     public class TaskController : ApiController
     {
-        private string filePath;
 
         public TaskController()
         {
-            this.filePath = System.Configuration.ConfigurationManager.AppSettings["Storage"];
+
         }
 
         public string Get()
         {
-            string data = File.ReadAllText(filePath);
-            List<TaskModel> taskList = JsonConvert.DeserializeObject<List<TaskModel>>(data);
-            string json = JsonConvert.SerializeObject(taskList);
+            Repository repo = new Repository();
+            IEnumerable<Task> taskList = repo.GetData();
+            List<TaskViewModel> data = Mapper.Map<List<Task>, List<TaskViewModel>>(taskList.ToList());
+            string json = JsonConvert.SerializeObject(data);
             return json;
         }
 
@@ -37,8 +39,7 @@ namespace TaskManagerApp.Controllers.api
         {
             string json = await request.Content.ReadAsStringAsync();
             List<TaskViewModel> newTasks = JsonConvert.DeserializeObject<List<TaskViewModel>>(json);
-            List<TaskModel> taskList = Mapper.Map<List<TaskViewModel>, List<TaskModel>>(newTasks);
-            File.WriteAllText(filePath, JsonConvert.SerializeObject(taskList));
+            List<Task> taskList = Mapper.Map<List<TaskViewModel>, List<Task>>(newTasks);
         }
     }
 }

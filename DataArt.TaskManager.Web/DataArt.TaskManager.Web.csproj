@@ -13,8 +13,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TaskManagerApp</RootNamespace>
-    <AssemblyName>TaskManagerApp</AssemblyName>
+    <RootNamespace>DataArt.TaskManager.Web</RootNamespace>
+    <AssemblyName>DataArt.TaskManager.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -241,7 +241,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Models\TaskViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -320,6 +319,16 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataArt.TaskManager.DAL\DataArt.TaskManager.DAL.csproj">
+      <Project>{eaa41162-70f3-47ee-b345-8c09c3064943}</Project>
+      <Name>DataArt.TaskManager.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataArt.TaskManager.Entities\DataArt.TaskManager.Entities.csproj">
+      <Project>{88e1f5a8-1bc0-4ab2-ab2b-c650fa61da56}</Project>
+      <Name>DataArt.TaskManager.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

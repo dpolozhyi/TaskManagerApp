@@ -3,7 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using TaskManagerApp.Models;
+using TaskManager.Models;
+using DataArt.TaskManager.Entities;
 
 namespace TaskManagerApp
 {
@@ -13,7 +14,21 @@ namespace TaskManagerApp
         {
             Mapper.Initialize(config =>
             {
-                config.CreateMap<TaskModel, TaskViewModel>()
+                config.CreateMap<Task, TaskViewModel>()
+                    .ForMember(
+                        e => e.IsDone,
+                        opt => opt.MapFrom(
+                            res => res.IsDone))
+                    .ForMember(
+                        e => e.Category,
+                        opt => opt.MapFrom(
+                            res => res.Category.Name))
+                    .ForMember(
+                        e => e.Title,
+                        opt => opt.MapFrom(
+                            res => res.Title));
+
+                config.CreateMap<TaskViewModel, Task>()
                     .ForMember(
                         e => e.IsDone,
                         opt => opt.MapFrom(
@@ -24,20 +39,6 @@ namespace TaskManagerApp
                             res => res.Category))
                     .ForMember(
                         e => e.Title,
-                        opt => opt.MapFrom(
-                            res => res.Description));
-
-                config.CreateMap<TaskViewModel, TaskModel>()
-                    .ForMember(
-                        e => e.IsDone,
-                        opt => opt.MapFrom(
-                            res => res.IsDone))
-                    .ForMember(
-                        e => e.Category,
-                        opt => opt.MapFrom(
-                            res => res.Category))
-                    .ForMember(
-                        e => e.Description,
                         opt => opt.MapFrom(
                             res => res.Title));
             });

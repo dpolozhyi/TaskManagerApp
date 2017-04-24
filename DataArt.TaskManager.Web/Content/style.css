@@ -106,7 +106,7 @@ div.new-task{
     vertical-align: top;
     color: white;
     font-size: 20px;
-    margin: 0 40px;
+    margin: 10px 40px;
     background: #6dbcff;
 }
 
@@ -136,7 +136,7 @@ div.new-task, div.task-list{
 }
 
 div.task-list{
-    margin-left: -4px;
+    margin:10px 20px 10px 40px;
 }
 
 /***Categories list styles*/
