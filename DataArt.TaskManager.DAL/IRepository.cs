@@ -1,12 +1,12 @@
-﻿using System;
+﻿using DataArt.TaskManager.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataArt.TaskManager.DAL
 {
-    public class IRepository
+    public interface IRepository
     {
+        IEnumerable<Task> GetTasksList();
+
+        IEnumerable<Category> GetCategoriesList();
     }
 }

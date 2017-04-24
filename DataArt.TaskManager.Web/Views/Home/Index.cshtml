@@ -13,14 +13,14 @@
         </div>
         <div>
             <label>Type: </label>
-            <select data-bind="options: filteredCategories, value: newTaskCategory"></select>
+            <select data-bind="options: filteredCategories, value: newTaskCategory, optionsText: 'name'"></select>
         </div>
         <button data-bind="click: addTask" class="base-button add-button">Add</button>
     </div>
     <div class="task-list">
         <div class="task-category">
             <ul data-bind="foreach: categories">
-                <li data-bind="text: $data, click: $root.changeCategory, css: { activeCategory: $data==$root.currentCategory() }"></li>
+                <li data-bind="text: name, click: $root.changeCategory, css: { activeCategory: name==$root.currentCategory().name }"></li>
             </ul>
         </div>
         <div class="tasks-display" style="border: 1px solid red">

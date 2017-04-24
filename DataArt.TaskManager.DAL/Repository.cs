@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -9,13 +10,11 @@ using DataArt.TaskManager.Entities;
 
 namespace DataArt.TaskManager.DAL
 {
-    public class Repository
+    public class Repository: IRepository, IDisposable
     {
         private SqlConnection connection;
 
-
-
-        public Repository() : this(@"Data Source=(localdb)\ProjectsV13;Initial Catalog=DataArt.TaskManager.Database_1;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False")
+        public Repository() : this(ConfigurationManager.ConnectionStrings["TaskConnection"].ConnectionString)
         {
 
         }
@@ -26,10 +25,11 @@ namespace DataArt.TaskManager.DAL
             this.connection.Open();
         }
 
-        public IEnumerable<Entities.Task> GetData()
+        public IEnumerable<Entities.Task> GetTasksList()
         {
             IList<Entities.Task> taskList = new List<Entities.Task>();
-            SqlCommand sqlCommand = new SqlCommand("select Tasks.Id, Title, IsDone, Categories.Id, Name from Tasks join Categories on Tasks.Category_Id=Categories.Id;", this.connection);
+            SqlCommand sqlCommand = new SqlCommand("GetTasksList", this.connection);
+            sqlCommand.CommandType = CommandType.StoredProcedure;
             using (var sqlReader = sqlCommand.ExecuteReader())
             {
                 while (sqlReader.Read())
@@ -48,11 +48,34 @@ namespace DataArt.TaskManager.DAL
             return taskList;
         }
 
+        public IEnumerable<Category> GetCategoriesList()
+        {
+            IList<Category> categoryList = new List<Category>();
+            SqlCommand sqlCommand = new SqlCommand("GetCategoriesList", this.connection);
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+            using (var sqlReader = sqlCommand.ExecuteReader())
+            {
+                while (sqlReader.Read())
+                {
+                    Category category = new Category();
+                    category.Id = this.ParseInt(sqlReader[0].ToString());
+                    category.Name = sqlReader[1].ToString();
+                    categoryList.Add(category);
+                }
+            }
+            return categoryList;
+        }
+
         private int ParseInt(string value)
         {
             int num;
             Int32.TryParse(value, out num);
             return num;
+        }
+
+        public void Dispose()
+        {
+            this.connection.Close();
         }
     }
 }

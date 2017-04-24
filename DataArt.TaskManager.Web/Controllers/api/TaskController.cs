@@ -15,16 +15,16 @@ namespace TaskManager.Controllers.api
 {
     public class TaskController : ApiController
     {
+        private IRepository repository;
 
         public TaskController()
         {
-
+            this.repository = new Repository();
         }
 
         public string Get()
         {
-            Repository repo = new Repository();
-            IEnumerable<Task> taskList = repo.GetData();
+            IEnumerable<Task> taskList = repository.GetTasksList();
             List<TaskViewModel> data = Mapper.Map<List<Task>, List<TaskViewModel>>(taskList.ToList());
             string json = JsonConvert.SerializeObject(data);
             return json;

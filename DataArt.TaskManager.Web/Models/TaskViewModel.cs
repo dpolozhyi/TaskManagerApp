@@ -7,6 +7,8 @@ namespace TaskManager.Models
 {
     public class TaskViewModel
     {
+        public int TaskId { get; set; }
+
         public string Title { get; set; }
 
         public string Category { get; set; }
