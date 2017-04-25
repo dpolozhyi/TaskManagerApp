@@ -1,45 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Newtonsoft.Json;
-using TaskManager.Models;
-using System.IO;
 using AutoMapper;
 using DataArt.TaskManager.Entities;
 using DataArt.TaskManager.DAL;
+using DataArt.TaskManager.DAL.Exceptions;
+using System.Web;
+using DataArt.TaskManager.BL;
 
 namespace TaskManager.Controllers.api
 {
     public class TaskController : ApiController
     {
-        private IRepository repository;
+        private TaskService taskService;
 
         public TaskController()
         {
-            this.repository = new Repository();
+            this.taskService = new TaskService(new Repository());
         }
 
-        public string Get()
+        public IHttpActionResult Get()
         {
-            IEnumerable<Task> taskList = repository.GetTasksList();
-            List<TaskViewModel> data = Mapper.Map<List<Task>, List<TaskViewModel>>(taskList.ToList());
-            string json = JsonConvert.SerializeObject(data);
-            return json;
+            try
+            {
+                List<TaskViewModel> data = taskService.GetTasks().ToList();
+                return Ok(data);
+            }
+            catch(DataSourceCommunicationException)
+            {
+                return base.NotFound();
+            }
         }
 
-        public string Get(int id)
+        public async void Post(HttpRequestMessage req)
         {
-            return "value";
-        }
+            string json = await req.Content.ReadAsStringAsync();
+            IEnumerable<TaskViewModel> taskList = JsonConvert.DeserializeObject<List<TaskViewModel>>(json);
+            this.taskService.UpdateTasks(taskList);
+            /*var tasks = request.Tasks;
+            var taskManager = new TaskManager(repository);
+            try
+            {
+                taskManager.Process(tasks);
+            }
+            catch (System.Exception)
+            {
+                return new HttAc
+            }*/
 
-        public async void Post(HttpRequestMessage request)
-        {
-            string json = await request.Content.ReadAsStringAsync();
-            List<TaskViewModel> newTasks = JsonConvert.DeserializeObject<List<TaskViewModel>>(json);
-            List<Task> taskList = Mapper.Map<List<TaskViewModel>, List<Task>>(newTasks);
+            //return Ok("All tasks was processed.");
+
         }
     }
 }

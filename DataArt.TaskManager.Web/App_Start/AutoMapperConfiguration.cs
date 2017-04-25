@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using TaskManager.Models;
 using DataArt.TaskManager.Entities;
+using DataArt.TaskManager.BL;
 
 namespace TaskManagerApp
 {
@@ -24,6 +20,10 @@ namespace TaskManagerApp
                         opt => opt.MapFrom(
                             res => res.Category.Name))
                     .ForMember(
+                        e => e.Category,
+                        opt => opt.MapFrom(
+                            res => res.Category))
+                    .ForMember(
                         e => e.Title,
                         opt => opt.MapFrom(
                             res => res.Title));
@@ -38,9 +38,33 @@ namespace TaskManagerApp
                         opt => opt.MapFrom(
                             res => res.Category))
                     .ForMember(
+                        e => e.Category,
+                        opt => opt.MapFrom(
+                            res => res.Category))
+                    .ForMember(
                         e => e.Title,
                         opt => opt.MapFrom(
                             res => res.Title));
+
+                config.CreateMap<Category, CategoryViewModel>()
+                    .ForMember(
+                        e => e.Id,
+                        opt => opt.MapFrom(
+                            res => res.Id))
+                    .ForMember(
+                        e => e.Name,
+                        opt => opt.MapFrom(
+                            res => res.Name));
+
+                config.CreateMap<CategoryViewModel, Category>()
+                    .ForMember(
+                        e => e.Id,
+                        opt => opt.MapFrom(
+                            res => res.Id))
+                    .ForMember(
+                        e => e.Name,
+                        opt => opt.MapFrom(
+                            res => res.Name));
             });
         }
     }

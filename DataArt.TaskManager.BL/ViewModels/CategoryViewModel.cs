@@ -1,6 +1,6 @@
-﻿namespace DataArt.TaskManager.Entities
+﻿namespace DataArt.TaskManager.BL
 {
-    public class Category
+    public class CategoryViewModel
     {
         public int Id { get; set; }
 

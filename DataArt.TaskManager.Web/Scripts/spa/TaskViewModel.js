@@ -19,35 +19,50 @@ function TaskViewModel() {
     });
 
     self.chosenTasks = ko.computed(function () {
-        console.log(self.categories());
-        console.log(self.currentCategory());
-        if(self.currentCategory()==undefined) return;
-        return ko.utils.arrayFilter(self.tasks(), function (item) {
-            if (self.currentCategory().name == "All" || item.category == self.currentCategory().name)
+        if (self.currentCategory() == undefined) return;
+        var res = 
+         ko.utils.arrayFilter(self.tasks(), function (item) {
+            if ((self.currentCategory().name == "All" || item.category.name == self.currentCategory().name) && item.state() != 2)
                 return item;
-        });
+         });
+        return res;
+    });
+
+    self.chosenCategory = ko.computed(function () {
+        console.log(self.newTaskCategory());
+        console.log(self.currentCategory());
+        console.log(self.filteredCategories());
+        if (self.newTaskCategory() != undefined) {
+            return self.newTaskCategory().name;
+        }
+        if (self.currentCategory() != undefined && self.currentCategory().name != 'All') {
+            return self.currentCategory().name;
+        }
+        if (self.filteredCategories().length > 0) {
+            return self.filteredCategories()[0].name;
+        }
     });
 
     self.changeCategory = function (item) {
         self.currentCategory(item);
+        if (item.name != 'All') {
+            self.newTaskCategory(item);
+        }
     };
 
-    self.addTask = function() {
-        self.tasks.push(new Task(false, self.newTaskCategory(), self.newTask()));
-        console.log(self.tasks());
+    self.addTask = function () {
+        self.tasks.push(new Task(0, false, self.newTaskCategory(), self.newTask(), 1));
+        //console.log(self.tasks());
     };
 
-    self.removeTask = function(task) {
-        self.tasks.remove(task);
+    self.removeTask = function (task) {
+        var taskId = self.tasks.indexOf(task);
+        self.tasks()[taskId]['state'](2);
     };
 
     self.saveTasks = function () {
-
-        /*console.log(JSON.stringify(self.tasks()));
-        $.ajax("/api/Task", {
-            data: JSON.stringify( self.tasks() ),
-            type: "post", contentType: "application/json",
-        });*/
+        console.log(ko.toJSON(self.tasks()));
+        self.dataManager.sendTasks(self.tasks());
     }
 
     self.dataManager.getTasks(self.tasks);
@@ -55,8 +70,20 @@ function TaskViewModel() {
     self.dataManager.getCategories(function (mappedCategories) {
         mappedCategories.unshift(new Category(-1, 'All'));
         self.changeCategory(mappedCategories[0]);
+        self.newTaskCategory(mappedCategories[1]);
         self.categories(mappedCategories);
+        self.tasks(ko.utils.arrayFilter(self.tasks(), function (item) {
+            return new Task(item.isDone, getCategoryByName(item.category), item.title);
+        }));
     });
+
+    function getCategoryByName(name){
+        var categories = self.categories();
+        for(var i = 0; i < categories.length; i++){
+            if (categories[i].name == name)
+                return categories[i];
+        }
+    }
 }
 
 ko.applyBindings(new TaskViewModel());

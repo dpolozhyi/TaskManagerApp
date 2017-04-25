@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataArt.TaskManager.DAL", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataArt.TaskManager.Entities", "DataArt.TaskManager.Entities\DataArt.TaskManager.Entities.csproj", "{88E1F5A8-1BC0-4AB2-AB2B-C650FA61DA56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataArt.TaskManager.BL", "DataArt.TaskManager.BL\DataArt.TaskManager.BL.csproj", "{40DA1FE0-17DA-4B9B-BCB3-49AF8EBEAD90}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{88E1F5A8-1BC0-4AB2-AB2B-C650FA61DA56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88E1F5A8-1BC0-4AB2-AB2B-C650FA61DA56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88E1F5A8-1BC0-4AB2-AB2B-C650FA61DA56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40DA1FE0-17DA-4B9B-BCB3-49AF8EBEAD90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40DA1FE0-17DA-4B9B-BCB3-49AF8EBEAD90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40DA1FE0-17DA-4B9B-BCB3-49AF8EBEAD90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40DA1FE0-17DA-4B9B-BCB3-49AF8EBEAD90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

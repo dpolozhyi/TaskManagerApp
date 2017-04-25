@@ -3,10 +3,9 @@ using System.Configuration;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataArt.TaskManager.Entities;
+using System.Diagnostics;
+using DataArt.TaskManager.DAL.Exceptions;
 
 namespace DataArt.TaskManager.DAL
 {
@@ -27,43 +26,95 @@ namespace DataArt.TaskManager.DAL
 
         public IEnumerable<Entities.Task> GetTasksList()
         {
-            IList<Entities.Task> taskList = new List<Entities.Task>();
-            SqlCommand sqlCommand = new SqlCommand("GetTasksList", this.connection);
-            sqlCommand.CommandType = CommandType.StoredProcedure;
-            using (var sqlReader = sqlCommand.ExecuteReader())
+            try
             {
-                while (sqlReader.Read())
+                IList<Entities.Task> taskList = new List<Entities.Task>();
+                SqlCommand sqlCommand = new SqlCommand("GetTasksList", this.connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                using (var sqlReader = sqlCommand.ExecuteReader())
                 {
-                    Entities.Task task = new Entities.Task();
-                    task.Id = this.ParseInt(sqlReader[0].ToString());
-                    task.Title = sqlReader[1].ToString();
-                    task.IsDone = sqlReader[2].ToString() == "True" ? true : false;
-                    Category category = new Category();
-                    category.Id = this.ParseInt(sqlReader[3].ToString());
-                    category.Name = sqlReader[4].ToString();
-                    task.Category = category;
-                    taskList.Add(task);
+                    while (sqlReader.Read())
+                    {
+                        Entities.Task task = new Entities.Task();
+                        task.Id = this.ParseInt(sqlReader[0].ToString());
+                        task.Title = sqlReader[1].ToString();
+                        task.IsDone = sqlReader[2].ToString() == "True" ? true : false;
+                        Category category = new Category();
+                        category.Id = this.ParseInt(sqlReader[3].ToString());
+                        category.Name = sqlReader[4].ToString();
+                        task.Category = category;
+                        taskList.Add(task);
+                    }
                 }
+                return taskList;
             }
-            return taskList;
+            catch (Exception ex)
+            {
+                Debug.Write(ex);
+                throw new DataSourceCommunicationException(ex.Message, ex);
+            }
         }
 
         public IEnumerable<Category> GetCategoriesList()
         {
-            IList<Category> categoryList = new List<Category>();
-            SqlCommand sqlCommand = new SqlCommand("GetCategoriesList", this.connection);
-            sqlCommand.CommandType = CommandType.StoredProcedure;
-            using (var sqlReader = sqlCommand.ExecuteReader())
+            try
             {
-                while (sqlReader.Read())
+                IList<Category> categoryList = new List<Category>();
+                SqlCommand sqlCommand = new SqlCommand("GetCategoriesList", this.connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                using (var sqlReader = sqlCommand.ExecuteReader())
                 {
-                    Category category = new Category();
-                    category.Id = this.ParseInt(sqlReader[0].ToString());
-                    category.Name = sqlReader[1].ToString();
-                    categoryList.Add(category);
+                    while (sqlReader.Read())
+                    {
+                        Category category = new Category();
+                        category.Id = this.ParseInt(sqlReader[0].ToString());
+                        category.Name = sqlReader[1].ToString();
+                        categoryList.Add(category);
+                    }
                 }
+                return categoryList;
             }
-            return categoryList;
+            catch (Exception ex)
+            {
+                Debug.Write(ex);
+                throw new DataSourceCommunicationException(ex.Message, ex);
+            }
+        }
+
+        public int AddTask(string title, int categoryId, bool isDone)
+        {
+            try
+            {
+                IList<Category> categoryList = new List<Category>();
+                SqlCommand sqlCommand = new SqlCommand("AddTask", this.connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.Add("@title", SqlDbType.NVarChar).Value = title;
+                sqlCommand.Parameters.Add("@categoryId", SqlDbType.Int).Value = categoryId;
+                sqlCommand.Parameters.Add("@isDone", SqlDbType.Bit).Value = isDone;
+                return sqlCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Debug.Write(ex);
+                throw new DataSourceCommunicationException(ex.Message, ex);
+            }
+        }
+
+        public int DeleteTaskById(int id)
+        {
+            try
+            {
+                IList<Category> categoryList = new List<Category>();
+                SqlCommand sqlCommand = new SqlCommand("DeleteTask", this.connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                return sqlCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Debug.Write(ex);
+                throw new DataSourceCommunicationException(ex.Message, ex);
+            }
         }
 
         private int ParseInt(string value)

@@ -1,4 +1,4 @@
-﻿<div class="navbar">
+﻿<!--<div class="navbar">
     <ul class="nav">
         <a href="#"><li class='active'>Main</li></a>
         <a href="#"><li>Profile</li></a>
@@ -23,6 +23,7 @@
                 <li data-bind="text: name, click: $root.changeCategory, css: { activeCategory: name==$root.currentCategory().name }"></li>
             </ul>
         </div>
+
         <div class="tasks-display" style="border: 1px solid red">
             <ul class="tasks" data-bind="foreach: chosenTasks">
                 <li>
@@ -34,7 +35,61 @@
             <button data-bind="click: saveTasks, enable: false" class="base-button">Save</button>
         </div>
     </div>
+</div>-->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group">
+                <div class="input-group-btn">
+                    <button type="button" data-bind="text: chosenCategory" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    </button>
+                    <div class="dropdown-menu" data-bind="foreach: filteredCategories">
+                        <a class="dropdown-item" href="#" data-bind="text: name, click: $root.newTaskCategory"></a>
+                    </div>
+                </div>
+                <input type="text" data-bind="value: newTask" class="form-control" aria-label="Text input with dropdown button">
+                <span class="input-group-btn">
+                    <button data-bind="click: addTask" class="btn btn-success" type="button">Add</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <ul class="nav nav-tabs" data-bind="foreach: categories">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-bind="text: name, click: $root.changeCategory, css: { active: name==$root.currentCategory().name }"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <ul class="list-group" data-bind="foreach: chosenTasks">
+                <li class="list-group-item">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <input type="checkbox" data-bind="checked: isDone">
+                        </span>
+                        <input type="text" data-bind="value: title" class="form-control" readonly>
+                        <span class="input-group-btn">
+                            <button type="button" data-bind="click: $root.removeTask" class="btn btn-danger" aria-label="Close">
+                                <span aria-hidden="true" style="font-size: 30px">&times;</span>
+                            </button>
+                        </span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <button type="button" data-bind="click: saveTasks" class="btn btn-primary btn-lg btn-block">Save</button>
+        </div>
+    </div>
 </div>
+
 
 @section scripts {
 }
