@@ -8,8 +8,8 @@
     },
     shim: {
         dataManager: ["category", "task"],
-        taskViwModel: ["category", "task", "dataManager"]
+        taskViewModel: ["category", "task", "dataManager"]
     }
 });
 
-require(["category", "task", "datamanager", "taskViewModel"]);
+require(["category", "task", "dataManager", "taskViewModel"]);
