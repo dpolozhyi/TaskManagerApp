@@ -4,7 +4,8 @@
     {
         Unchanged,
         New,
-        Deleted
+        Deleted,
+        Modified
     }
 
     public class TaskViewModel

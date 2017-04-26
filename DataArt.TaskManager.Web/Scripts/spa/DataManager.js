@@ -15,12 +15,12 @@
         });
     }
 
-    self.sendTasks = function (tasks) {
+    self.sendTasks = function (tasks, callback) {
         $.ajax("/api/Task",
             {
                 data: ko.toJSON(tasks),
                 type: "post", contentType: "application/json",
-                success: function (result) { alert(result) }
+                success: setTimeout(function (result) { callback(result) }, 700)
             });
     }
 }

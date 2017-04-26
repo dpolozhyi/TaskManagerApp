@@ -65,5 +65,6 @@
     <Build Include="GetCategoriesList.sql" />
     <Build Include="AddTask.sql" />
     <Build Include="DeleteTask.sql" />
+    <Build Include="EditTask.sql" />
   </ItemGroup>
 </Project>

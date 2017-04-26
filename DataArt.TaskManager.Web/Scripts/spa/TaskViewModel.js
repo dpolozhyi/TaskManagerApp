@@ -11,6 +11,23 @@ function TaskViewModel() {
     self.newTask = ko.observable();
     self.newTaskCategory = ko.observable();
 
+    self.taskProcessing = ko.observable(false);
+
+    self.editableTask = ko.observable();
+
+    self.editTask = function (task) {
+        if (self.editableTask() == task) {
+            self.editableTask(null);
+        }
+        else {
+            self.editableTask(task);
+            if (task.state() != 1) {
+                var taskId = self.tasks().indexOf(task);
+                self.tasks()[taskId]['state'](3);
+            }
+        }
+    }
+
     self.filteredCategories = ko.computed(function () {
         return ko.utils.arrayFilter(self.categories(), function (item) {
             if (item.name != "All")
@@ -62,7 +79,8 @@ function TaskViewModel() {
 
     self.saveTasks = function () {
         console.log(ko.toJSON(self.tasks()));
-        self.dataManager.sendTasks(self.tasks());
+        self.taskProcessing(true);
+        self.dataManager.sendTasks(self.tasks(), function () { self.taskProcessing(false); });
     }
 
     self.dataManager.getTasks(self.tasks);
@@ -82,6 +100,44 @@ function TaskViewModel() {
         for(var i = 0; i < categories.length; i++){
             if (categories[i].name == name)
                 return categories[i];
+        }
+    }
+}
+
+ko.bindingHandlers.progressButton = {
+    init: function (element, valueAccessor) {
+        
+    },
+
+    update: function (element, valueAccessor) {
+        var activateAnimation = valueAccessor();
+        if (activateAnimation) {
+            $(element).addClass("m-progress");
+        }
+        else {
+            $(element).removeClass("m-progress");
+        }
+    }
+}
+
+ko.bindingHandlers.displayElement = {
+    init: function (element, valueAccessor) {
+        var access = valueAccessor();
+        if (access) {
+            $(element).removeClass("non-display");
+        }
+        else {
+            $(element).addClass("non-display");
+        }
+    },
+
+    update: function (element, valueAccessor) {
+        var access = valueAccessor();
+        if (access) {
+            $(element).removeClass("non-display");
+        }
+        else {
+             $(element).addClass("non-display");
         }
     }
 }

@@ -11,6 +11,8 @@ namespace DataArt.TaskManager.DAL
 
         int AddTask(string title, int categoryId, bool isDone);
 
+        int ModifyTask(int taskId, string title, int categoryId, bool isDone);
+
         int DeleteTaskById(int id);
     }
 }

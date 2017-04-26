@@ -100,6 +100,26 @@ namespace DataArt.TaskManager.DAL
             }
         }
 
+        public int ModifyTask(int taskId, string title, int categoryId, bool isDone)
+        {
+            try
+            {
+                IList<Category> categoryList = new List<Category>();
+                SqlCommand sqlCommand = new SqlCommand("EditTask", this.connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.Add("@taskId", SqlDbType.Int).Value = taskId;
+                sqlCommand.Parameters.Add("@title", SqlDbType.NVarChar).Value = title;
+                sqlCommand.Parameters.Add("@categoryId", SqlDbType.Int).Value = categoryId;
+                sqlCommand.Parameters.Add("@isDone", SqlDbType.Bit).Value = isDone;
+                return sqlCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Debug.Write(ex);
+                throw new DataSourceCommunicationException(ex.Message, ex);
+            }
+        }
+
         public int DeleteTaskById(int id)
         {
             try

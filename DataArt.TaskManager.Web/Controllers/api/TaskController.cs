@@ -36,9 +36,16 @@ namespace TaskManager.Controllers.api
 
         public async void Post(HttpRequestMessage req)
         {
-            string json = await req.Content.ReadAsStringAsync();
-            IEnumerable<TaskViewModel> taskList = JsonConvert.DeserializeObject<List<TaskViewModel>>(json);
-            this.taskService.UpdateTasks(taskList);
+            try
+            {
+                string json = await req.Content.ReadAsStringAsync();
+                IEnumerable<TaskViewModel> taskList = JsonConvert.DeserializeObject<List<TaskViewModel>>(json);
+                this.taskService.UpdateTasks(taskList);
+            }
+            catch(DataSourceCommunicationException)
+            {
+
+            }
             /*var tasks = request.Tasks;
             var taskManager = new TaskManager(repository);
             try
