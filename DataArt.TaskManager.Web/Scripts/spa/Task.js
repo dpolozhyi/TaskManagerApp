@@ -3,7 +3,7 @@
 
     self.id = id;
     self.isDone = isDone;
-    self.category = category;
-    self.title = description;
+    self.category = ko.observable(category);
+    self.title = ko.observable(description);
     self.state = ko.observable(state || 0);
 }

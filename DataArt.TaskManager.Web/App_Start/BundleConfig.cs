@@ -29,6 +29,8 @@ namespace TaskManagerApp
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/style.css",
+                "~/Content/font-awesome.css",
+                "~/Content/font-awesome.min.css",
                 "~/Content/bootstrap.css",
                 "~/Content/bootstrap.min.css"));
         }

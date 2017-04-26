@@ -9,5 +9,7 @@
         public Category Category { get; set; }
 
         public bool IsDone { get; set; }
+
+        public TaskState State { get; set; }
     }
 }

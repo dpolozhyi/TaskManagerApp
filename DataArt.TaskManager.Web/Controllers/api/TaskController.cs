@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Web.Http;
-using Newtonsoft.Json;
 using AutoMapper;
 using DataArt.TaskManager.Entities;
 using DataArt.TaskManager.DAL;
 using DataArt.TaskManager.DAL.Exceptions;
-using System.Web;
 using DataArt.TaskManager.BL;
+using System.Linq;
 
 namespace TaskManager.Controllers.api
 {
@@ -25,40 +22,53 @@ namespace TaskManager.Controllers.api
         {
             try
             {
-                List<TaskViewModel> data = taskService.GetTasks().ToList();
+                IEnumerable<Task> tasks = this.taskService.GetTasks();
+                IEnumerable<TaskViewModel> data = this.MapTasks(tasks);
+
                 return Ok(data);
             }
-            catch(DataSourceCommunicationException)
+            catch (DataSourceCommunicationException)
             {
                 return base.NotFound();
             }
         }
 
-        public async void Post(HttpRequestMessage req)
+        /*[HttpPost]
+        public IHttpActionResult UpdateTask([FromBody] TaskViewModel taskList)
         {
             try
             {
-                string json = await req.Content.ReadAsStringAsync();
-                IEnumerable<TaskViewModel> taskList = JsonConvert.DeserializeObject<List<TaskViewModel>>(json);
-                this.taskService.UpdateTasks(taskList);
+                Task mappedTask = Mapper.Map<TaskViewModel, Task>(taskList);
+                this.taskService.UpdateTask(mappedTask);
             }
-            catch(DataSourceCommunicationException)
+            catch (DataSourceCommunicationException)
             {
-
+                return base.BadRequest("Sorry, some troubles has happend");
             }
-            /*var tasks = request.Tasks;
-            var taskManager = new TaskManager(repository);
+            return Ok("Data was updated");
+
+        }*/
+
+        [HttpPost]
+        public IHttpActionResult UpdateTasks([FromBody] IEnumerable<TaskViewModel> taskList)
+        {
             try
             {
-                taskManager.Process(tasks);
+                IEnumerable<Task> mappedTasks = Mapper.Map<IEnumerable<TaskViewModel>, IEnumerable<Task>>(taskList);
+                this.taskService.UpdateTask(mappedTasks.FirstOrDefault());
             }
-            catch (System.Exception)
+            catch (DataSourceCommunicationException)
             {
-                return new HttAc
-            }*/
-
-            //return Ok("All tasks was processed.");
+                return base.BadRequest("Sorry, some troubles has happend");
+            }
+            return Ok("All tasks was processed.");
 
         }
+
+        private IEnumerable<TaskViewModel> MapTasks(IEnumerable<Task> tasks)
+        {
+            return Mapper.Map<IEnumerable<Task>, IEnumerable<TaskViewModel>>(tasks);
+        }
+
     }
 }

@@ -1,13 +1,7 @@
-﻿namespace DataArt.TaskManager.BL
-{
-    public enum TaskState
-    {
-        Unchanged,
-        New,
-        Deleted,
-        Modified
-    }
+﻿using DataArt.TaskManager.Entities;
 
+namespace DataArt.TaskManager.BL
+{
     public class TaskViewModel
     {
         public int Id { get; set; }

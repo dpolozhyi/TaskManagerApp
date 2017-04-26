@@ -2,7 +2,6 @@
 using DataArt.TaskManager.Entities;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 
 namespace DataArt.TaskManager.BL
 {
@@ -15,22 +14,41 @@ namespace DataArt.TaskManager.BL
             this.repository = repo;
         }
 
-        public IEnumerable<TaskViewModel> GetTasks()
+        public IEnumerable<Task> GetTasks()
         {
-            IEnumerable<Task> taskList = repository.GetTasksList();
-            List<TaskViewModel> mappedTasks = Mapper.Map<List<Task>, List<TaskViewModel>>(taskList.ToList());
-            return mappedTasks;
+            return repository.GetTasksList();
         }
 
-        public IEnumerable<CategoryViewModel> GetCategories()
+        public IEnumerable<Category> GetCategories()
         {
-            List<Category> categoriesList = this.repository.GetCategoriesList().ToList();
-            return Mapper.Map<List<Category>, List<CategoryViewModel>>(categoriesList);
+            return this.repository.GetCategoriesList().ToList();
         }
 
-        public void UpdateTasks(IEnumerable<TaskViewModel> tasksList)
+        public void UpdateTask(Task task)
         {
-            List<Task> tasks = Mapper.Map<List<TaskViewModel>, List<Task>>(tasksList.ToList());
+            switch (task.State)
+            {
+                case TaskState.Deleted:
+                    {
+                        this.repository.DeleteTaskById(task.Id);
+                        break;
+                    }
+                case TaskState.New:
+                    {
+                        this.repository.AddTask(task.Title, task.Category.Id, task.IsDone);
+                        break;
+                    }
+                case TaskState.Modified:
+                    {
+                        this.repository.ModifyTask(task.Id, task.Title, task.Category.Id, task.IsDone);
+                        break;
+                    }
+            }
+        }
+
+        public void UpdateTasks(IEnumerable<Task> tasksList)
+        {
+            //ToDo: All the list of operations should be done in one transaction(UoW pattern)
             tasksList.Where(n => n.State == TaskState.Deleted).Select(n => n.Id).ToList().ForEach(n => this.repository.DeleteTaskById(n));
             tasksList.Where(n => n.State == TaskState.New).ToList().ForEach(n => this.repository.AddTask(n.Title, n.Category.Id, n.IsDone));
             tasksList.Where(n => n.State == TaskState.Modified || n.State == TaskState.Unchanged).ToList().ForEach(n => this.repository.ModifyTask(n.Id, n.Title, n.Category.Id, n.IsDone));

@@ -15,17 +15,29 @@ function TaskViewModel() {
 
     self.editableTask = ko.observable();
 
+
     self.editTask = function (task) {
-        if (self.editableTask() == task) {
+        self.editableTask(task);
+        console.log(self.editableTask());
+        if (task.state() != 1) {
+            var taskId = self.tasks().indexOf(task);
+            self.tasks()[taskId]['state'](3);
+        }
+    }
+
+    self.cancelEditedTask = function () {
+        self.editableTask(null);
+    }
+
+    self.saveEditedTask = function (task) {
+        var taskId = self.tasks().indexOf(task);
+        self.tasks()[taskId] = self.editableTask();
+
+        self.taskProcessing(true);
+        self.dataManager.sendTasks(self.tasks()[taskId], function () {
+            self.taskProcessing(false);
             self.editableTask(null);
-        }
-        else {
-            self.editableTask(task);
-            if (task.state() != 1) {
-                var taskId = self.tasks().indexOf(task);
-                self.tasks()[taskId]['state'](3);
-            }
-        }
+        });
     }
 
     self.filteredCategories = ko.computed(function () {
@@ -37,18 +49,15 @@ function TaskViewModel() {
 
     self.chosenTasks = ko.computed(function () {
         if (self.currentCategory() == undefined) return;
-        var res = 
+        var res =
          ko.utils.arrayFilter(self.tasks(), function (item) {
-            if ((self.currentCategory().name == "All" || item.category.name == self.currentCategory().name) && item.state() != 2)
-                return item;
+             if ((self.currentCategory().name == "All" || item.category().name == self.currentCategory().name) && item.state() != 2)
+                 return item;
          });
         return res;
     });
 
     self.chosenCategory = ko.computed(function () {
-        console.log(self.newTaskCategory());
-        console.log(self.currentCategory());
-        console.log(self.filteredCategories());
         if (self.newTaskCategory() != undefined) {
             return self.newTaskCategory().name;
         }
@@ -80,7 +89,7 @@ function TaskViewModel() {
     self.saveTasks = function () {
         console.log(ko.toJSON(self.tasks()));
         self.taskProcessing(true);
-        self.dataManager.sendTasks(self.tasks(), function () { self.taskProcessing(false); });
+        self.dataManager.sendTasks(self.tasks()[0], function () { self.taskProcessing(false); });
     }
 
     self.dataManager.getTasks(self.tasks);
@@ -91,13 +100,13 @@ function TaskViewModel() {
         self.newTaskCategory(mappedCategories[1]);
         self.categories(mappedCategories);
         self.tasks(ko.utils.arrayFilter(self.tasks(), function (item) {
-            return new Task(item.isDone, getCategoryByName(item.category), item.title);
+            return new Task(item.isDone, getCategoryByName(item.category()), item.title);
         }));
     });
 
-    function getCategoryByName(name){
+    function getCategoryByName(name) {
         var categories = self.categories();
-        for(var i = 0; i < categories.length; i++){
+        for (var i = 0; i < categories.length; i++) {
             if (categories[i].name == name)
                 return categories[i];
         }
@@ -106,7 +115,7 @@ function TaskViewModel() {
 
 ko.bindingHandlers.progressButton = {
     init: function (element, valueAccessor) {
-        
+
     },
 
     update: function (element, valueAccessor) {
@@ -137,7 +146,7 @@ ko.bindingHandlers.displayElement = {
             $(element).removeClass("non-display");
         }
         else {
-             $(element).addClass("non-display");
+            $(element).addClass("non-display");
         }
     }
 }

@@ -105,12 +105,14 @@ namespace DataArt.TaskManager.DAL
             try
             {
                 IList<Category> categoryList = new List<Category>();
+
                 SqlCommand sqlCommand = new SqlCommand("EditTask", this.connection);
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.Add("@taskId", SqlDbType.Int).Value = taskId;
                 sqlCommand.Parameters.Add("@title", SqlDbType.NVarChar).Value = title;
                 sqlCommand.Parameters.Add("@categoryId", SqlDbType.Int).Value = categoryId;
                 sqlCommand.Parameters.Add("@isDone", SqlDbType.Bit).Value = isDone;
+
                 return sqlCommand.ExecuteNonQuery();
             }
             catch (Exception ex)
