@@ -68,5 +68,6 @@
     <Build Include="Procedures\EditTask.sql" />
     <Build Include="Procedures\GetCategoriesList.sql" />
     <Build Include="Procedures\GetTasksList.sql" />
+    <Build Include="Procedures\GetTask.sql" />
   </ItemGroup>
 </Project>

@@ -24,7 +24,7 @@ namespace DataArt.TaskManager.BL
             return this.repository.GetCategoriesList().ToList();
         }
 
-        public void UpdateTask(Task task)
+        public Task UpdateTask(Task task)
         {
             switch (task.State)
             {
@@ -35,15 +35,16 @@ namespace DataArt.TaskManager.BL
                     }
                 case TaskState.New:
                     {
-                        this.repository.AddTask(task.Title, task.Category.Id, task.IsDone);
-                        break;
+                        int newId = this.repository.AddTask(task.Title, task.Category.Id, task.IsDone);
+                        return this.repository.GetTask(newId);
                     }
                 case TaskState.Modified:
                     {
                         this.repository.ModifyTask(task.Id, task.Title, task.Category.Id, task.IsDone);
-                        break;
+                        return this.repository.GetTask(task.Id);
                     }
             }
+            return null;
         }
 
         public void UpdateTasks(IEnumerable<Task> tasksList)

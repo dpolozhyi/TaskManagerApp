@@ -6,6 +6,9 @@ using DataArt.TaskManager.DAL;
 using DataArt.TaskManager.DAL.Exceptions;
 using DataArt.TaskManager.BL;
 using System.Linq;
+using System;
+using System.IO;
+using System.Web.Mvc;
 
 namespace TaskManager.Controllers.api
 {
@@ -24,10 +27,9 @@ namespace TaskManager.Controllers.api
             {
                 IEnumerable<Task> tasks = this.taskService.GetTasks();
                 IEnumerable<TaskViewModel> data = this.MapTasks(tasks);
-
                 return Ok(data);
             }
-            catch (DataSourceCommunicationException)
+            catch (DataSourceCommunicationException ex)
             {
                 return base.NotFound();
             }
@@ -49,15 +51,20 @@ namespace TaskManager.Controllers.api
 
         }*/
 
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         public IHttpActionResult UpdateTasks([FromBody] IEnumerable<TaskViewModel> taskList)
         {
             try
             {
                 IEnumerable<Task> mappedTasks = Mapper.Map<IEnumerable<TaskViewModel>, IEnumerable<Task>>(taskList);
-                this.taskService.UpdateTask(mappedTasks.FirstOrDefault());
+                Task returnedTask = this.taskService.UpdateTask(mappedTasks.FirstOrDefault());
+                if (returnedTask != null)
+                {
+                    return Ok(returnedTask);
+                }
+                return Ok("All tasks was processed.");
             }
-            catch (DataSourceCommunicationException)
+            catch (DataSourceCommunicationException ex)
             {
                 return base.BadRequest("Sorry, some troubles has happend");
             }
@@ -69,6 +76,5 @@ namespace TaskManager.Controllers.api
         {
             return Mapper.Map<IEnumerable<Task>, IEnumerable<TaskViewModel>>(tasks);
         }
-
     }
 }

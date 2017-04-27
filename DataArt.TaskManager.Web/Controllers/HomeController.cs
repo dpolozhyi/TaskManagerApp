@@ -8,6 +8,7 @@ using DataArt.TaskManager.Entities;
 
 namespace TaskManager.Controllers
 {
+    [HandleError(View = "ErrorInfo")]
     public class HomeController : Controller
     {
         public ActionResult Index()

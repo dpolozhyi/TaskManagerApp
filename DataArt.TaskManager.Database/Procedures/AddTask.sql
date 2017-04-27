@@ -5,4 +5,5 @@
 AS
 BEGIN
 	INSERT INTO Tasks(Title, Category_Id, IsDone) VALUES(@title, @categoryId, @isDone);
+	SELECT CAST(SCOPE_IDENTITY() AS INT);
 END

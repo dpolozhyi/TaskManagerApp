@@ -3,6 +3,7 @@ using DataArt.TaskManager.DAL.Exceptions;
 using DataArt.TaskManager.Entities;
 using System.Collections.Generic;
 using System.Web.Http;
+using System.Web.Mvc;
 
 namespace DataArt.TaskManager.Web.Controllers.api
 {

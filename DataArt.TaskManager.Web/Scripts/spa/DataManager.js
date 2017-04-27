@@ -6,6 +6,7 @@
             var mappedTasks = $.map(allData, function (item) {
                 return new Task(item.Id, item.IsDone, new Category(item.Category.Id, item.Category.Name), item.Title)
             });
+            console.log(mappedTasks);
             callback(mappedTasks);
         });
     }
@@ -19,18 +20,31 @@
         });
     }
 
-    self.sendTasks = function (tasks, callback) {
-        if (!Array.isArray(tasks)) {
-            tasks = [tasks];
-        }
+    self.sendTasks = function (tasks, callbackSuccess, callbackError) {
+        tasks = getArray(tasks);
         console.log(ko.toJSON(tasks));
         $.ajax("/api/Task",
             {
                 data: ko.toJSON(tasks),
                 type: "post", contentType: "application/json",
-                success: setTimeout(function (result) {
-                    callback(result)
-                }, 1800)
+                400: callbackError ? callbackError():'',
+                success: function (data) {
+                    var mappedTask = $.map(getArray(data), function (item) {
+                        if (typeof item === 'object') {
+                            return new Task(item.Id, item.IsDone, new Category(item.Category.Id, item.Category.Name), item.Title);
+                        }
+                    });
+                    setTimeout(callbackSuccess, 1500, mappedTask[0]);
+                }
             });
+    }
+
+    function getArray(item) {
+        if (!Array.isArray(item)) {
+            return [item];
+        }
+        else {
+            return item;
+        }
     }
 }

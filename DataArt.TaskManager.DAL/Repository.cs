@@ -81,6 +81,37 @@ namespace DataArt.TaskManager.DAL
             }
         }
 
+        public Task GetTask(int id)
+        {
+            try
+            {
+                SqlCommand sqlCommand = new SqlCommand("GetTask", this.connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.Add("@id", SqlDbType.NVarChar).Value = id;
+                using (var sqlReader = sqlCommand.ExecuteReader())
+                {
+                   if(sqlReader.Read())
+                    {
+                        Task task = new Task();
+                        task.Id = this.ParseInt(sqlReader[0].ToString());
+                        task.Title = sqlReader[1].ToString();
+                        task.IsDone = sqlReader[2].ToString() == "True" ? true : false;
+                        Category category = new Category();
+                        category.Id = this.ParseInt(sqlReader[3].ToString());
+                        category.Name = sqlReader[4].ToString();
+                        task.Category = category;
+                        return task;
+                    }
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Debug.Write(ex);
+                throw new DataSourceCommunicationException(ex.Message, ex);
+            }
+        }
+
         public int AddTask(string title, int categoryId, bool isDone)
         {
             try
@@ -91,7 +122,7 @@ namespace DataArt.TaskManager.DAL
                 sqlCommand.Parameters.Add("@title", SqlDbType.NVarChar).Value = title;
                 sqlCommand.Parameters.Add("@categoryId", SqlDbType.Int).Value = categoryId;
                 sqlCommand.Parameters.Add("@isDone", SqlDbType.Bit).Value = isDone;
-                return sqlCommand.ExecuteNonQuery();
+                return (int)sqlCommand.ExecuteScalar();
             }
             catch (Exception ex)
             {

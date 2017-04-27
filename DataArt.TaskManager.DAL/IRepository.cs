@@ -9,6 +9,8 @@ namespace DataArt.TaskManager.DAL
 
         IEnumerable<Category> GetCategoriesList();
 
+        Task GetTask(int id);
+
         int AddTask(string title, int categoryId, bool isDone);
 
         int ModifyTask(int taskId, string title, int categoryId, bool isDone);

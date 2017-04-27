@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[DeleteTask]
-	@id int
+	@id INT
 AS
 BEGIN
 	DELETE FROM Tasks WHERE Id = @id;
