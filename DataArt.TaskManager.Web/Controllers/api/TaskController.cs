@@ -10,17 +10,20 @@ using System;
 using System.IO;
 using System.Web.Mvc;
 using DataArt.TaskManager.Web.Filters;
+using Ninject;
+using System.Reflection;
+using DataArt.TaskManager.BL.Interfaces;
 
 namespace TaskManager.Controllers.api
 {
     [AppExceptionFilter]
     public class TaskController : ApiController
     {
-        private TaskService taskService;
+        private ITaskService taskService;
 
-        public TaskController()
+        public TaskController(ITaskService taskService)
         {
-            this.taskService = new TaskService(new Repository());
+            this.taskService = taskService;
         }
 
         public IHttpActionResult Get()
@@ -31,7 +34,7 @@ namespace TaskManager.Controllers.api
                 IEnumerable<TaskViewModel> data = this.MapTasks(tasks);
                 return Ok(data);
             }
-            catch (DataSourceCommunicationException ex)
+            catch (DataSourceCommunicationException)
             {
                 return base.NotFound();
             }
@@ -56,7 +59,6 @@ namespace TaskManager.Controllers.api
         [System.Web.Http.HttpPost]
         public IHttpActionResult UpdateTasks([FromBody] IEnumerable<TaskViewModel> taskList)
         {
-
             try
             {
                 IEnumerable<Task> mappedTasks = Mapper.Map<IEnumerable<TaskViewModel>, IEnumerable<Task>>(taskList);
@@ -67,12 +69,10 @@ namespace TaskManager.Controllers.api
                 }
                 return Ok("All tasks was processed.");
             }
-            catch (DataSourceCommunicationException ex)
+            catch (DataSourceCommunicationException)
             {
                 return base.BadRequest("Sorry, some troubles has happend");
             }
-            return Ok("All tasks was processed.");
-
         }
 
         private IEnumerable<TaskViewModel> MapTasks(IEnumerable<Task> tasks)

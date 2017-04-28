@@ -11,9 +11,9 @@ namespace DataArt.TaskManager.Web.Controllers.api
     {
         private IRepository repository;
 
-        public CategoryController()
+        public CategoryController(IRepository repository)
         {
-            this.repository = new Repository();
+            this.repository = repository;
         }
 
 

@@ -1,4 +1,8 @@
-﻿using System;
+﻿using DataArt.TaskManager.Web.App_Start;
+using Ninject;
+using Ninject.Modules;
+using Ninject.Web.WebApi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;

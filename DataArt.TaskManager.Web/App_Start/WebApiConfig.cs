@@ -1,5 +1,10 @@
 ﻿using System.Web.Http;
 using DataArt.TaskManager.Web.Filters;
+using Microsoft.Practices.Unity;
+using DataArt.TaskManager.DAL;
+using DataArt.TaskManager.BL.Interfaces;
+using DataArt.TaskManager.Web.App_Start;
+using DataArt.TaskManager.BL;
 
 namespace TaskManagerApp
 {
@@ -7,7 +12,10 @@ namespace TaskManagerApp
     {
         public static void Register(HttpConfiguration config)
         {
-            config.Filters.Add(new AppExceptionFilterAttribute());
+            var container = new UnityContainer();
+            container.RegisterType<IRepository, Repository>(new InjectionConstructor());
+            container.RegisterType<ITaskService, TaskService>(new HierarchicalLifetimeManager());
+            config.DependencyResolver = new UnityResolver(container);
 
             // Web API routes
             config.MapHttpAttributeRoutes();

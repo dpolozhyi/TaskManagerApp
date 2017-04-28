@@ -1,11 +1,12 @@
-﻿using DataArt.TaskManager.DAL;
+﻿using DataArt.TaskManager.BL.Interfaces;
+using DataArt.TaskManager.DAL;
 using DataArt.TaskManager.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DataArt.TaskManager.BL
 {
-    public class TaskService
+    public class TaskService : ITaskService
     {
         private IRepository repository;
 
