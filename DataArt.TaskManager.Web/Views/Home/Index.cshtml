@@ -1,4 +1,6 @@
-﻿<!--<div class="navbar">
+﻿<!-- ko if: false -->
+
+<!--<div class="navbar">
     <ul class="nav">
         <a href="#"><li class='active'>Main</li></a>
         <a href="#"><li>Profile</li></a>
@@ -37,34 +39,32 @@
     </div>
 </div>-->
 
+<!-- /ko -->
+
+
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-centered">
-            <div class="input-group">
-                <div class="input-group-btn">
-                    <button type="button" data-bind="text: chosenCategory" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                    <div class="dropdown-menu" data-bind="foreach: filteredCategories">
-                        <a class="dropdown-item" href="#" data-bind="text: name, click: $root.newTaskCategory"></a>
-                    </div>
+        <div class="col-md-8 new-task col-centered">
+                <!--<div class="input-group-btn">
+                <button type="button" data-bind="text: chosenCategory" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu" data-bind="foreach: filteredCategories">
+                    <a class="dropdown-item" href="#" data-bind="text: name, click: $root.newTaskCategory"></a>
                 </div>
+            </div>-->
+                <select class="new-select" data-bind="options: $root.filteredCategories, value: $root.newTaskCategory, optionsText: 'name'"></select>
                 <input type="text" data-bind="value: newTask" class="form-control" aria-label="Text input with dropdown button">
                 <span class="input-group-btn">
                     <button data-bind="click: addTask" class="btn btn-success" type="button">Add</button>
                 </span>
-            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8 col-centered">
+
+        <div class="nav-category col-md-8 col-centered">
             <ul class="nav nav-tabs" data-bind="foreach: categories">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" data-bind="text: name, click: $root.changeCategory, css: { active: name==$root.currentCategory().name }"></a>
-                </li>
+                <li class="nav-item" data-bind="text: name, click: $root.changeCategory, css: { active: name==$root.currentCategory().name }"></li>
             </ul>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8 col-centered">
+
+        <div class="col-md-8 task-list col-centered">
             <ul class="list-group" data-bind="foreach: chosenTasks">
                 <li class="list-group-item" data-bind="enable: false">
                     <!-- ko if: $root.taskProcessing() && $root.editableTask().id == $data.id -->
@@ -82,7 +82,7 @@
                         <!-- /ko -->
 
                         <!-- ko if: $root.editableTask() && $root.editableTask().id == $data.id && !$root.taskProcessing() -->
-                        <select class="form-control category-dropdown" data-bind="options: $root.filteredCategories, value: $root.editableTask().category, optionsText: 'name'"></select>
+                        <select class="form-control" data-bind="options: $root.filteredCategories, value: $root.editableTask().category, optionsText: 'name'"></select>
                         <!-- /ko -->
 
                         <!-- ko if: !$root.editableTask() || $root.editableTask().id != $data.id || $root.taskProcessing() -->
@@ -138,7 +138,6 @@
         </div>
     </div>
 </div>
-
 
 @section scripts {
 }
