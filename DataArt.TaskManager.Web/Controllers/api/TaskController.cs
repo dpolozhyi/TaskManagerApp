@@ -9,9 +9,11 @@ using System.Linq;
 using System;
 using System.IO;
 using System.Web.Mvc;
+using DataArt.TaskManager.Web.Filters;
 
 namespace TaskManager.Controllers.api
 {
+    [AppExceptionFilter]
     public class TaskController : ApiController
     {
         private TaskService taskService;
@@ -54,6 +56,7 @@ namespace TaskManager.Controllers.api
         [System.Web.Http.HttpPost]
         public IHttpActionResult UpdateTasks([FromBody] IEnumerable<TaskViewModel> taskList)
         {
+
             try
             {
                 IEnumerable<Task> mappedTasks = Mapper.Map<IEnumerable<TaskViewModel>, IEnumerable<Task>>(taskList);

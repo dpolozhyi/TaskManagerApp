@@ -28,9 +28,9 @@ function TaskViewModel() {
     self.changeTaskIsDone = function (task) {
         task.isDone = !task.isDone;
         task.state(3);
-        /*self.dataManager.sendTasks(task, function () {
+        self.dataManager.sendTasks(task, function () {
             console.log("SUCCESS");
-        });*/
+        });
         return task.isDone;
     }
 

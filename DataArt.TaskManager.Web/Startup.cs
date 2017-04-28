@@ -5,6 +5,7 @@ using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartup(typeof(TaskManagerApp.Startup))]
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace TaskManagerApp
 {
