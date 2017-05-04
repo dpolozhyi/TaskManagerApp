@@ -284,7 +284,7 @@ div.nav-category ul li:hover{
 }
 
 .categoryActive{
-    background: #ce4444;
+    background: #ce4444 !important;
 }
 
 /************End of category nav********/
@@ -331,32 +331,123 @@ div.task-list ul li:hover{
 
 div.task-list button{
     background:white;
+    color:white;
+    height: 100%;
+    width: 100%;
+}
+
+div.task-list button.btn-danger{
+    border: 1px solid #DB3434;
+    background: #DB3434;
 }
 
 div.task-list button.btn-danger:hover{
-    background:white;
-}
-
-
-div.task-list button.btn-danger{
-    border: 1px solid red;
+    background:#c52e2e;
 }
 
 div.task-list button.btn-warning{
-    border: 1px solid #e5c100;
-    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid #dadb3f;
+    background: #dadb3f;
 }
 
-div.task-list ul li span.input-group-btn{
+div.task-list button.btn-warning:hover{
+    background: #c4c538;
+}
+
+div.task-list button.btn-primary{
+    border: 1px solid #428bca;
+    background: #428bca;
+}
+
+div.task-list button.btn-primary:hover{
+    background: #3b7db5;
+}
+
+div.task-list ul li div.input-group{
+    
+    position: relative;
+    min-height: 40px;
+}
+
+div.task-list ul li div.input-group span.done-check{
+    position:absolute;
+    height: 100%;
+    left: 10px;
+    top: 7px;
+}
+
+div.task-list ul li div.input-group span.done-check input{
+    margin: 0;
+    display: inline-block;
+}
+
+div.task-list ul li div.input-group select{
+    position:absolute;
+    height: 100%;
+    left: 40px;
+}
+
+div.task-list ul li div.input-group span.category-label{
+    position:absolute;
+    height: 100%;
+    left: 40px;
+    top: 7px;
+}
+
+div.task-list ul li div.input-group input.task-name-input{
+    position:absolute;
+    height: 50%;
+    left: 120px;
+    top: 7px;
+}
+
+div.task-list ul li div.input-group input.change-input{
+    position:absolute;
+    height: 84%;
+    left: 120px;
+}
+
+div.task-list ul li div.input-group span.edit-button-wrapper,
+div.task-list ul li div.input-group span.save-button-wrapper,
+div.task-list ul li div.input-group span.cancel-button-wrapper,
+div.task-list ul li div.input-group span.delete-button-wrapper{
+    position:absolute;
+    right: 40px;
+    height: 100%;
+    width: 40px;
+}
+
+div.task-list ul li div.input-group span.edit-button-wrapper{
+
+}
+
+div.task-list ul li div.input-group span.save-button-wrapper{
+    position:absolute;
+    right: 80px;
+    height: 100%;
+    width: 40px;
+}
+
+div.task-list ul li div.input-group span.cancel-button-wrapper{
+    position:absolute;
+    right: 40px;
+    height: 100%;
+    width: 40px;
+}
+
+div.task-list ul li div.input-group span.delete-button-wrapper{
+    position:absolute;
+    right: 0;
+    height: 100%;
+    width: 40px;
+}
+
+div.task-list ul li div.input-group span.cancel-button-wrapper button,
+div.task-list ul li div.input-group span.save-button-wrapper button{
     
 }
 
-
 /************End of task list********/
-
-.category-label {
-    min-width: 90px;
-}
 
 .category-dropdown {
     max-width: 90px;

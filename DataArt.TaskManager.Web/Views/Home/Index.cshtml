@@ -1,5 +1,4 @@
 ﻿<!-- ko if: false -->
-
 <!--<div class="navbar">
     <ul class="nav">
         <a href="#"><li class='active'>Main</li></a>
@@ -38,29 +37,28 @@
         </div>
     </div>
 </div>-->
-
 <!-- /ko -->
 
 
 <div class="container">
     <div class="row">
         <div class="col-md-8 new-task col-centered">
-                <!--<div class="input-group-btn">
+            <!--<div class="input-group-btn">
                 <button type="button" data-bind="text: chosenCategory" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                 <div class="dropdown-menu" data-bind="foreach: filteredCategories">
                     <a class="dropdown-item" href="#" data-bind="text: name, click: $root.newTaskCategory"></a>
                 </div>
             </div>-->
-                <select class="new-select" data-bind="options: $root.filteredCategories, value: $root.newTaskCategory, optionsText: 'name'"></select>
-                <input type="text" data-bind="value: newTask" class="form-control" aria-label="Text input with dropdown button">
-                <span class="input-group-btn">
-                    <button data-bind="click: addTask" class="btn btn-success" type="button">Add</button>
-                </span>
+            <select class="new-select" data-bind="options: $root.filteredCategories, value: $root.newTaskCategory, optionsText: 'name'"></select>
+            <input type="text" data-bind="value: newTask" class="form-control" aria-label="Text input with dropdown button">
+            <span class="input-group-btn">
+                <button data-bind="click: addTask" class="btn btn-success" type="button">Add</button>
+            </span>
         </div>
 
         <div class="nav-category col-md-8 col-centered">
             <ul class="nav nav-tabs" data-bind="foreach: categories">
-                <li class="nav-item" data-bind="text: name, click: $root.changeCategory, css: { active: name==$root.currentCategory().name }"></li>
+                <li class="nav-item" data-bind="text: name, click: $root.changeCategory, css: { categoryActive: name==$root.currentCategory().name }"></li>
             </ul>
         </div>
 
@@ -72,7 +70,7 @@
                     </div>
                     <!-- /ko -->
                     <div class="input-group">
-                        <span class="input-group-addon">
+                        <span class="input-group-addon done-check">
                             <input type="checkbox" data-bind="checked: $root.changeTaskIsDone($data)">
                         </span>
 
@@ -82,33 +80,35 @@
                         <!-- /ko -->
 
                         <!-- ko if: $root.editableTask() && $root.editableTask().id == $data.id && !$root.taskProcessing() -->
-                        <select class="form-control" data-bind="options: $root.filteredCategories, value: $root.editableTask().category, optionsText: 'name'"></select>
+                        <select class="form-control category-select" data-bind="options: $root.filteredCategories, value: $root.editableTask().category, optionsText: 'name'"></select>
                         <!-- /ko -->
 
                         <!-- ko if: !$root.editableTask() || $root.editableTask().id != $data.id || $root.taskProcessing() -->
-                        <input type="text" data-bind="if: $root.editableTask() == undefined, value: title" readonly class="form-control">
+                        <input class="task-name-input" type="text" data-bind="if: $root.editableTask() == undefined, value: title" readonly class="form-control">
                         <!-- /ko -->
 
                         <!-- ko if: $root.editableTask() && $root.editableTask().id == $data.id && !$root.taskProcessing() -->
-                        <input type="text" data-bind="value: $root.editableTask().title" class="form-control">
+                        <input class="change-input" type="text" data-bind="value: $root.editableTask().title" class="form-control">
                         <!-- /ko -->
 
-                        <span class="input-group-btn" data-bind="if: !$root.editMode($data)">
+                        <span class="input-group-btn edit-button-wrapper" data-bind="if: !$root.editMode($data)">
                             <button type="button" data-bind="click: $root.editTask,  attr: { disabled: $root.taskProcessing() }" class="btn btn-warning" aria-label="Close">
                                 <span aria-hidden="true" class="taskButton"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
                             </button>
                         </span>
-                        <span class="input-group-btn" data-bind="if: $root.editMode($data), css: { changeButton: $root.editMode($data) }">
+                        <span class="input-group-btn save-button-wrapper" data-bind="if: $root.editMode($data), css: { changeButton: $root.editMode($data) }">
                             <button type="button" data-bind="click: $root.saveEditedTask" class="btn btn-primary saveButton" aria-label="Close">
                                 <span aria-hidden="true" class="taskButton"><i class="fa fa-floppy-o" aria-hidden="true"></i></span>
                             </button>
                         </span>
-                        <span class="input-group-btn" data-bind="if: $root.editMode($data), css: { changeButton: $root.editMode($data) }">
+                        <!-- ko if: $root.editMode($data) -->
+                        <span class="input-group-btn cancel-button-wrapper">
                             <button type="button" data-bind="click: $root.cancelEditedTask" class="btn btn-warning" aria-label="Close">
                                 <span aria-hidden="true" class="taskButton"><i class="fa fa-undo" aria-hidden="true"></i></span>
                             </button>
                         </span>
-                        <span class="input-group-btn">
+                        <!-- /ko -->
+                        <span class="input-group-btn delete-button-wrapper">
                             <button type="button" data-bind="click: $root.removeTask, attr: { disabled: $root.taskProcessing() }" class="btn btn-danger" aria-label="Close">
                                 <span aria-hidden="true" class="taskButton"><i class="fa fa-times" aria-hidden="true"></i></span>
                             </button>
